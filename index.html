@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body style="text-align:center;" id="body">
+<div class="h1-css">Вход в учетную запись </div>
+
+<!--<form>-->
+<input type="text"  class="enjoy-css" id="login" placeholder="Логин"><br>
+<input type="password"  class="enjoy-css" id="password" placeholder="пароль"><br>
+<p>
+    <button class="button-css" onclick="login()">Создать</button>
+
+<!--</form>-->
+    <!-- server out -->
+<p class="result" style="color:blue"></p> </p>
+</body>
+</html>
+<script>
+function login() {
+
+    let login = document.querySelector('#login');
+    let password = document.querySelector('#password');
+    let type=1;
+    if(login.value==="" || password.value==="" ){
+        alert("логин и пароль не должны быть пустые")
+
+    }else {
+
+        let result = document.querySelector('.result');
+
+        let xhr = new XMLHttpRequest();
+
+        let url = "http://frontend/json.php";
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState === 4 && xhr.status === 200) {
+
+                var out = JSON.parse(xhr.responseText);
+
+                result.innerHTML = out.result;
+                if(out.result===true){
+                    $(location).attr('href',"http://frontend/main.html");
+                }
+            }
+        };
+
+
+        var data = JSON.stringify({"type": type, "login": login.value, "password": password.value});
+
+        xhr.send(data);
+    }
+} </script>
