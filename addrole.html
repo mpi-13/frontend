@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body style="text-align:center;" id="body">
+<div class="h1-css">Создание роли </div>
+
+<input type="text"  class="enjoy-css" id="name" placeholder="Название роли"><br>
+<textarea id="description" class="enjoy-css" placeholder="Описание" rows="5" cols="23"></textarea><br><br>
+Дать рут права роли    <input type="checkbox" id="supervisor" name="supervisor" value="false"/>
+
+<p>
+    <button class="button-css" onclick="sendJSON()">Создать</button>
+    <!-- server out -->
+<p class="result" style="color:blue"></p> </p>
+
+</body>
+</html>
+<script>
+function sendJSON() {
+// с помощью jQuery обращаемся к элементам на странице по их именам
+    let name = document.querySelector('#name');
+    let description = document.querySelector('#description');
+    var chbox;
+    var supervisor;
+    chbox=document.getElementById('supervisor');
+    // let supervisor = document.querySelector('#supervisor');
+    if (chbox.checked) {
+        supervisor=true;
+    }
+    else {
+        supervisor=false;
+    }
+
+    if(name.value==="" || description.value==="" ){
+        alert("имя роли и описание не должны быть пустые")
+
+    }else {
+// ответ от сервера
+    let result = document.querySelector('.result');
+// создаём новый экземпляр запроса XHR
+    let xhr = new XMLHttpRequest();
+// адрес
+    let url = "http://frontend/role.php";
+// открываем соединение
+    xhr.open("POST", url, true); // устанавливаем заголовок — выбираем тип контента, который отправится на сервер, в нашем случае мы явно пишем, что это JSON
+    xhr.setRequestHeader("Content-Type", "application/json");
+// прием ответа от сервера
+    xhr.onreadystatechange = function () {
+        // если запрос принят и сервер ответил, что всё в порядке
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // ответ от сервера
+            result.innerHTML = this.responseText;
+        }
+    };
+    var data = JSON.stringify({"type":1,"name": name.value, "description": description.value,"supervisor":supervisor});
+// когда всё готово, отправляем JSON на сервер
+    xhr.send(data);}
+} </script>

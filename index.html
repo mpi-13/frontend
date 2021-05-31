@@ -9,15 +9,13 @@
 <body style="text-align:center;" id="body">
 <div class="h1-css">Вход в учетную запись </div>
 
-<!--<form>-->
+
 <input type="text"  class="enjoy-css" id="login" placeholder="Логин"><br>
 <input type="password"  class="enjoy-css" id="password" placeholder="пароль"><br>
 <p>
-    <button class="button-css" onclick="login()">Создать</button>
+    <button class="button-css" onclick="login()">Вход</button>
 
-<!--</form>-->
-    <!-- server out -->
-<p class="result" style="color:blue"></p> </p>
+
 </body>
 </html>
 <script>
@@ -25,13 +23,13 @@ function login() {
 
     let login = document.querySelector('#login');
     let password = document.querySelector('#password');
-    let type=1;
+    let type=6;
     if(login.value==="" || password.value==="" ){
         alert("логин и пароль не должны быть пустые")
 
     }else {
 
-        let result = document.querySelector('.result');
+
 
         let xhr = new XMLHttpRequest();
 
@@ -46,9 +44,14 @@ function login() {
 
                 var out = JSON.parse(xhr.responseText);
 
-                result.innerHTML = out.result;
+
+                // result.innerHTML = out.result;
                 if(out.result===true){
-                    $(location).attr('href',"http://frontend/main.html");
+                    // document.location = "http://frontend/main.html?admin=" +out.admin.toString()+"?userid="+out.userid.toString();
+                    document.location = "http://frontend/main.html?userid="+out.userid.toString();
+
+                }else{
+                    alert("неверный пароль или логин")
                 }
             }
         };

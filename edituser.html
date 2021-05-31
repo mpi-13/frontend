@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body style="text-align:center;" id="body">
+<div class="h1-css">Редактирование учетной записи </div>
+
+<input type="text"  class="enjoy-css" id="name" placeholder="ФИО"><br>
+<input type="text"  class="enjoy-css" id="workerid" placeholder="Номер сотрудника"><br>
+<input type="text"  class="enjoy-css" id="wage" placeholder="Зарплата"><br>
+<input type="password"  class="enjoy-css" id="password" placeholder="пароль"><br>
+
+
+
+<p>
+  <button class="button-css" onclick="sendJSON()">Создать</button>
+  <!-- server out -->
+<p class="result" style="color:blue"></p> </p>
+<div class="output"></div>
+</body>
+<script></script>
+</html>
+<script>
+
+  let url = "http://frontend/edituser.php";
+  let role = new XMLHttpRequest();
+  role.open("GET", url, true);
+  // когда придёт ответ на наше обращение к серверу, мы его обработаем здесь
+  role.setRequestHeader("Content-Type", "application/json");
+
+  role.onreadystatechange = function () {
+    // прием ответа от сервера
+    if (role.readyState === 4 && role.status === 200) {
+      // парс джейсона
+      var data = JSON.parse(role.responseText);
+      $('#name').val(data.name)
+      $('#workerid').val(data.workerid)
+      $('#wage').val(data.wage)
+
+
+
+    }
+  };
+  //кодировка запроса на сервер
+  var data = JSON.stringify({"type":4.5});
+  //  JSON на сервер
+  role.send(data);
+
+  function sendJSON() {
+// с помощью jQuery обращаемся к элементам на странице по их именам
+    let name = document.querySelector('#name');
+    let workerid = document.querySelector('#workerid');
+    let wage = document.querySelector('#wage');
+    let password = document.querySelector('#password');
+    let role = document.querySelector('#role');
+
+// ответ от сервера
+    let result = document.querySelector('.result');
+// создаём новый экземпляр запроса XHR
+    let xhr = new XMLHttpRequest();
+// адрес
+    let url = "http://frontend/user1.php";
+// открываем соединение
+    xhr.open("POST", url, true); // устанавливаем заголовок — выбираем тип контента, который отправится на сервер, в нашем случае мы явно пишем, что это JSON
+    xhr.setRequestHeader("Content-Type", "application/json");
+// прием ответа от сервера
+    xhr.onreadystatechange = function () {
+      // если запрос принят и сервер ответил, что всё в порядке
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        // ответ от сервера
+        result.innerHTML = this.responseText;
+      }
+    };
+
+    var data = JSON.stringify({"type":4,"name": name.value, "workerid": workerid.value,"wage":wage.value,"password":password.value});
+    xhr.send(data);
+  } </script>
